@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>morg finder - AI Powered</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #00ffcc;
+      letter-spacing: 1.5px;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #bbb;
+      margin-top: 5px;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      padding: 15px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 90%;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 50px;
+      background: #1f2937;
+      width: 90%;
+      border-radius: 10px;
+      z-index: 10;
+      max-height: 150px;
+      overflow-y: auto;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .suggestions div {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestions div:hover {
+      background-color: #374151;
+    }
+
+    section {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      transition: transform 0.3s;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .card h2 {
+      color: #00ffff;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .ai-badge {
+      background: #00ffcc;
+      color: #000;
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 5px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #eee;
+      margin-bottom: 10px;
+    }
+
+    .card img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #00ffff;
+      text-decoration: underline;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #111;
+      color: #aaa;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>morg finder</h1>
+    <p>AI-powered technology encyclopedia</p>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for technology..." oninput="searchCards()">
+    <div class="suggestions" id="suggestionsBox"></div>
+  </div>
+
+  <section id="cardContainer">
+
+    <div class="card">
+      <h2>🤖 Artificial Intelligence</h2>
+      <span class="ai-badge">AI Powered</span>
+      <p>AI refers to machines mimicking human intelligence like learning and problem-solving.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Artificial_Intelligence_%26_AI.jpg" alt="AI Image">
+      <a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank">Learn More</a>
+    </div>
+
+    <div class="card">
+      <h2>🧠 Machine Learning</h2>
+      <span class="ai-badge">AI Powered</span>
+      <p>ML enables computers to learn from data and improve performance over time.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Machine_learning_process.png" alt="ML Image">
+      <a href="https://en.wikipedia.org/wiki/Machine_learning" target="_blank">Learn More</a>
+    </div>
+
+    <div class="card">
+      <h2>☁️ Cloud Computing</h2>
+      <p>Cloud services deliver computing resources over the internet on-demand.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Cloud_computing_icon.svg" alt="Cloud Image">
+      <a href="https://en.wikipedia.org/wiki/Cloud_computing" target="_blank">Learn More</a>
+    </div>
+
+    <div class="card">
+      <h2>📡 Internet of Things</h2>
+      <p>IoT connects smart devices and enables real-time data sharing and automation.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Internet_of_things_vector.svg" alt="IoT Image">
+      <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="_blank">Learn More</a>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2025 morg finder | Powered by AI
+  </footer>
+
+  <script>
+    const suggestions = ["Artificial Intelligence", "Machine Learning", "Cloud Computing", "Internet of Things", "5G", "Cybersecurity", "Quantum Computing"];
+
+    function searchCards() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      const suggestBox = document.getElementById("suggestionsBox");
+
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? 'block' : 'none';
+      });
+
+      suggestBox.innerHTML = "";
+      if (input) {
+        const matched = suggestions.filter(term => term.toLowerCase().includes(input));
+        matched.forEach(m => {
+          const div = document.createElement("div");
+          div.textContent = m;
+          div.onclick = () => {
+            document.getElementById('searchInput').value = m;
+            suggestBox.innerHTML = "";
+            searchCards();
+          };
+          suggestBox.appendChild(div);
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>
